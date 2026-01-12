@@ -43,13 +43,13 @@ const Navbar: React.FC<NavbarProps> = ({
               onClick={() => onToggleCollection('masculine')}
               className={`px-4 py-1.5 rounded-full transition-all duration-300 ${currentCollection === 'masculine' ? 'bg-[#0B0B0B] text-[#C6A75E] shadow-lg' : 'opacity-40 hover:opacity-100'}`}
             >
-              Heritage
+              Masculino
             </button>
             <button 
               onClick={() => onToggleCollection('feminine')}
               className={`px-4 py-1.5 rounded-full transition-all duration-300 ${currentCollection === 'feminine' ? 'bg-[#B08968] text-[#FDFBF7] shadow-lg' : 'opacity-40 hover:opacity-100'}`}
             >
-              Ethereal
+              Feminino
             </button>
           </div>
 

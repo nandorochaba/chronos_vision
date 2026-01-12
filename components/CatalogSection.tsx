@@ -68,7 +68,7 @@ const CatalogSection: React.FC<CatalogSectionProps> = ({
                 isMasculine ? 'bg-[#C6A75E] text-black shadow-lg scale-105 z-10' : 'text-current opacity-40'
               }`}
             >
-              Heritage
+              Masculino
             </button>
             <button 
               onClick={() => handleFilterChange('feminine', 'Todos')}
@@ -76,7 +76,7 @@ const CatalogSection: React.FC<CatalogSectionProps> = ({
                 !isMasculine ? 'bg-[#B08968] text-white shadow-lg scale-105 z-10' : 'text-current opacity-40'
               }`}
             >
-              Ethereal
+              Feminino
             </button>
           </div>
         </div>
