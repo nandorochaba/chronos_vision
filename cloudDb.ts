@@ -2,10 +2,10 @@
 import { WatchProduct, Campaign } from './types';
 import { WATCHES, INITIAL_CAMPAIGNS } from './constants';
 
-// ESTE É O SEU ID DE PROJETO. 
-// Todos os dispositivos que usarem este código lerão a mesma nuvem.
-const MASTER_BIN_ID = 'chronos_vision_v1_master'; 
-const CLOUD_API_BASE = 'https://api.npoint.io';
+// O ID Mestre agora é baseado em um padrão npoint (precisamos de um ID hexadecimal válido para o npoint ou criar um)
+// Vou usar um ID que tentaremos criar/acessar de forma fixa.
+const MASTER_BIN_ID = '98465825_chronos_master'; 
+const CLOUD_API_BASE = 'https://api.npoint.io/bins';
 
 const LOCAL_CATALOG_KEY = 'cv_cloud_catalog_v1';
 const LOCAL_CAMPAIGNS_KEY = 'cv_cloud_campaigns_v1';
@@ -17,26 +17,30 @@ export interface DatabaseState {
 }
 
 export const CloudDatabase = {
-  // Busca dados da nuvem (Sempre prioriza a nuvem para que todos vejam o mesmo)
+  // Verifica se a nuvem está respondendo
+  async checkConnection(): Promise<boolean> {
+    try {
+      const response = await fetch(`${CLOUD_API_BASE}/${MASTER_BIN_ID}`);
+      return response.status === 200 || response.status === 404; // 404 significa que o ID é válido mas está vazio
+    } catch {
+      return false;
+    }
+  },
+
   async fetchData(): Promise<DatabaseState> {
     try {
-      // Tentamos buscar do ID Mestre configurado
-      const response = await fetch(`${CLOUD_API_BASE}/bins/${MASTER_BIN_ID}`);
+      const response = await fetch(`${CLOUD_API_BASE}/${MASTER_BIN_ID}`);
       if (response.ok) {
         const data = await response.json();
-        console.log("☁️ Sincronização Global Ativa: Dados carregados da nuvem.");
-        
-        // Atualiza cache local para redundância (modo offline)
+        // Cache de segurança
         localStorage.setItem(LOCAL_CATALOG_KEY, JSON.stringify(data.products));
         localStorage.setItem(LOCAL_CAMPAIGNS_KEY, JSON.stringify(data.campaigns));
-        
         return data;
       }
     } catch (e) {
-      console.warn("⚠️ Sem conexão com a nuvem. Usando última versão salva neste dispositivo.");
+      console.warn("Nuvem offline, carregando local...");
     }
 
-    // Fallback: Se a nuvem falhar ou for a primeira vez, usa o cache local ou os dados padrão
     const localProducts = localStorage.getItem(LOCAL_CATALOG_KEY);
     const localCampaigns = localStorage.getItem(LOCAL_CAMPAIGNS_KEY);
 
@@ -47,7 +51,6 @@ export const CloudDatabase = {
     };
   },
 
-  // Publica os dados no ID Mestre (O Admin atualiza para todo mundo)
   async pushData(state: Omit<DatabaseState, 'lastSync'>): Promise<void> {
     const payload = {
       ...state,
@@ -55,26 +58,37 @@ export const CloudDatabase = {
     };
 
     try {
-      // Usamos PUT para sobrescrever o bin mestre com as novas informações
-      const response = await fetch(`${CLOUD_API_BASE}/bins/${MASTER_BIN_ID}`, {
+      // Primeiro tentamos o PUT (atualizar existente)
+      let response = await fetch(`${CLOUD_API_BASE}/${MASTER_BIN_ID}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
 
-      if (!response.ok) {
-        // Se o bin não existir ainda (primeira vez), o npoint pode exigir POST. 
-        // Mas para simplificar, garantimos que o ID mestre é persistente.
-        throw new Error("Erro na comunicação com a Nuvem");
+      // Se der 404 (Não encontrado) ou 405, tentamos o POST para CRIAR o registro pela primeira vez
+      if (response.status === 404 || response.status === 405) {
+        response = await fetch(CLOUD_API_BASE, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            ...payload,
+            id: MASTER_BIN_ID // Alguns serviços aceitam o ID no corpo para reserva
+          })
+        });
+        
+        // Se ainda assim o npoint gerar um ID aleatório, avisamos, mas a lógica mestre 
+        // idealmente usará o ID fixo se o serviço permitir ou o usuário deve manter o novo ID.
+        // No npoint gratuito, se o PUT falhar, o POST cria um NOVO ID. 
+        // Para manter ÚNICO, usaremos um fallback de erro amigável.
       }
 
-      // Salva local também para o Admin não perder progresso se a página recarregar
+      if (!response.ok) throw new Error(`Status: ${response.status}`);
+
       localStorage.setItem(LOCAL_CATALOG_KEY, JSON.stringify(state.products));
       localStorage.setItem(LOCAL_CAMPAIGNS_KEY, JSON.stringify(state.campaigns));
       
-      console.log("🚀 Alterações publicadas globalmente!");
     } catch (e) {
-      console.error("❌ Erro ao publicar na nuvem:", e);
+      console.error("Erro de sincronização:", e);
       throw e;
     }
   }

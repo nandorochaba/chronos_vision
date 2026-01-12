@@ -9,6 +9,7 @@ import TrustSection from './components/TrustSection';
 import Footer from './components/Footer';
 import CartSidebar from './components/CartSidebar';
 import CheckoutForm from './components/CheckoutForm';
+import MobileNav from './components/MobileNav';
 import { WatchProduct, CartItem, CollectionType, Campaign } from './types';
 import { WATCHES, INITIAL_CAMPAIGNS } from './constants';
 
@@ -33,12 +34,12 @@ const App: React.FC = () => {
 
   const openProduct = (product: WatchProduct) => {
     setSelectedProduct(product);
-    document.body.style.overflow = 'hidden';
+    document.body.classList.add('modal-open');
   };
 
   const closeProduct = () => {
     setSelectedProduct(null);
-    if (!isCartOpen && !isCheckoutOpen) document.body.style.overflow = 'auto';
+    document.body.classList.remove('modal-open');
   };
 
   const addToCart = (product: WatchProduct) => {
@@ -106,6 +107,15 @@ const App: React.FC = () => {
       </main>
 
       <Footer theme={theme} />
+
+      {/* Novo MobileNav com as 4 sessões solicitadas */}
+      <MobileNav 
+        currentCollection={collection}
+        onToggleCollection={setCollection}
+        onOpenCart={() => setIsCartOpen(true)}
+        cartCount={cartCount}
+        theme={theme}
+      />
 
       {selectedProduct && (
         <ProductModal 

@@ -41,13 +41,13 @@ const Navbar: React.FC<NavbarProps> = ({
           <div className="flex bg-black/5 rounded-full p-1 border border-current/10">
             <button 
               onClick={() => onToggleCollection('masculine')}
-              className={`px-4 py-1.5 rounded-full transition-all duration-300 ${currentCollection === 'masculine' ? 'bg-[#0B0B0B] text-[#C6A75E] shadow-lg' : 'opacity-40 hover:opacity-100'}`}
+              className={`px-6 py-2 rounded-full transition-all duration-300 ${currentCollection === 'masculine' ? `${theme.accentBg} text-white md:text-black shadow-lg` : 'opacity-40 hover:opacity-100'}`}
             >
               Masculino
             </button>
             <button 
               onClick={() => onToggleCollection('feminine')}
-              className={`px-4 py-1.5 rounded-full transition-all duration-300 ${currentCollection === 'feminine' ? 'bg-[#B08968] text-[#FDFBF7] shadow-lg' : 'opacity-40 hover:opacity-100'}`}
+              className={`px-6 py-2 rounded-full transition-all duration-300 ${currentCollection === 'feminine' ? `${theme.accentBg} text-white md:text-black shadow-lg` : 'opacity-40 hover:opacity-100'}`}
             >
               Feminino
             </button>
@@ -60,7 +60,7 @@ const Navbar: React.FC<NavbarProps> = ({
             onClick={onOpenCart}
             className="flex items-center space-x-3 hover:opacity-60 transition-all relative"
           >
-            <span>Carrinho</span>
+            <span>Sacola</span>
             {cartCount > 0 && (
               <span className={`absolute -top-3 -right-4 ${theme.accentBg} text-white md:text-black text-[8px] font-black w-4 h-4 flex items-center justify-center rounded-full animate-pulse`}>
                 {cartCount}
@@ -73,18 +73,12 @@ const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         <div className="md:hidden flex items-center space-x-6">
-          <button 
-            onClick={() => onToggleCollection(currentCollection === 'masculine' ? 'feminine' : 'masculine')}
-            className={`w-8 h-8 rounded-full border ${theme.border} flex items-center justify-center text-[8px] font-bold`}
-          >
-            {currentCollection === 'masculine' ? 'FEM' : 'MASC'}
-          </button>
-          <button onClick={onOpenCart} className="relative">
+          <button onClick={onOpenCart} className="relative p-2">
              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
               </svg>
               {cartCount > 0 && (
-                <span className={`absolute -top-1 -right-1 ${theme.accentBg} text-white text-[8px] font-black w-3.5 h-3.5 flex items-center justify-center rounded-full`}>
+                <span className={`absolute top-0 right-0 ${theme.accentBg} text-white text-[8px] font-black w-4 h-4 flex items-center justify-center rounded-full ring-2 ring-black/20`}>
                   {cartCount}
                 </span>
               )}

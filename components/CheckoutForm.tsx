@@ -80,7 +80,7 @@ PAGAMENTO: Aguardando conferência do PIX.
 Enviado via Chronos & Vision`;
 
     // Correcting WhatsApp number to 55 + 98 + 98465825
-    const whatsappUrl = `https://wa.me/559898465825?text=${encodeURIComponent(fullMessage)}`;
+    const whatsappUrl = `https://wa.me/5598983070387?text=${encodeURIComponent(fullMessage)}`;
     
     window.open(whatsappUrl, '_blank');
     onClose();
