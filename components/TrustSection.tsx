@@ -35,26 +35,32 @@ const TrustSection: React.FC<TrustSectionProps> = ({ theme }) => {
   }, []);
 
   return (
-    <section ref={sectionRef} className={`py-24 px-4 transition-colors duration-700 ${theme.bg}`}>
-      <div className="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-8">
+    <section ref={sectionRef} className={`py-32 px-4 transition-colors duration-700 ${theme.bg}`}>
+      <div className="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-y-16 gap-x-8">
         {items.map((item, i) => (
           <div 
             key={i} 
-            className={`flex flex-col items-center text-center space-y-4 group transition-all duration-1000 ease-out`}
+            className={`flex flex-col items-center text-center space-y-6 group transition-all duration-[1000ms] ease-[cubic-bezier(0.22,1,0.36,1)]`}
             style={{ 
-              transitionDelay: `${i * 150}ms`,
+              transitionDelay: `${i * 100}ms`,
               opacity: isVisible ? 1 : 0,
-              transform: isVisible ? 'translateY(0)' : 'translateY(20px)'
+              transform: isVisible ? 'translateY(0) scale(1)' : 'translateY(20px) scale(0.95)'
             }}
           >
-            <div className={`w-16 h-16 rounded-full border ${theme.border} flex items-center justify-center group-hover:${theme.accentBorder} transition-colors`}>
-              <svg className={`w-6 h-6 ${theme.accent.replace('text-', 'text-[#').replace(']', ']')}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className={`w-20 h-20 rounded-full border ${theme.border} flex items-center justify-center group-hover:${theme.accentBorder} transition-all duration-700 relative`}>
+              {/* Outer glow effect on hover */}
+              <div className={`absolute inset-0 rounded-full bg-[#C6A75E] opacity-0 group-hover:opacity-5 blur-md transition-opacity duration-700`}></div>
+              
+              <svg className={`w-7 h-7 ${theme.accent.replace('text-', 'text-[#').replace(']', ']')}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d={item.icon} />
               </svg>
             </div>
-            <span className={`text-[10px] tracking-[0.2em] uppercase font-bold opacity-60 group-hover:opacity-100 transition-colors`}>
-              {item.title}
-            </span>
+            <div className="space-y-1">
+              <span className={`text-[11px] tracking-[0.25em] uppercase font-black opacity-40 group-hover:opacity-100 transition-all duration-700 group-hover:${theme.accent}`}>
+                {item.title}
+              </span>
+              <div className={`h-px w-0 group-hover:w-8 mx-auto ${theme.accentBg} transition-all duration-700 opacity-50`}></div>
+            </div>
           </div>
         ))}
       </div>
