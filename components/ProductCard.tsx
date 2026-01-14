@@ -44,11 +44,18 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onClick, theme }) =>
           {product.name}
         </h3>
         <div className="flex flex-col gap-0.5">
-          <p className="text-xs md:text-sm font-serif text-[#C6A75E] font-medium">
-            {product.priceLabel}
-          </p>
+          <div className="flex items-center gap-2">
+            {product.originalPriceLabel && (
+              <span className="text-[10px] opacity-20 line-through font-serif decoration-[#C6A75E]/40">
+                {product.originalPriceLabel}
+              </span>
+            )}
+            <p className="text-xs md:text-sm font-serif text-[#C6A75E] font-medium">
+              {product.priceLabel}
+            </p>
+          </div>
           <p className="text-[8px] opacity-40 uppercase tracking-[0.2em] font-black">
-            12x R$ {(product.price/12).toFixed(2).replace('.', ',')}
+            {product.maxInstallments}x R$ {(product.price / product.maxInstallments).toFixed(2).replace('.', ',')}
           </p>
         </div>
       </div>

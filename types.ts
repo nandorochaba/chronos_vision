@@ -8,11 +8,15 @@ export interface WatchProduct {
   category: string;
   shortDescription: string;
   longDescription: string;
+  lifestyleCopy: string;
   material: string;
   price: number;
   priceLabel: string;
+  originalPrice?: number; // Preço original para ancoragem
+  originalPriceLabel?: string; // Label do preço original
+  maxInstallments: number;
   mainImage: string;
-  videoUrl?: string; // Campo para vídeo de apresentação
+  videoUrl?: string;
   gallery: string[];
   specs: {
     movimento: string;
@@ -20,6 +24,7 @@ export interface WatchProduct {
     pulseira: string;
     resistencia: string;
     diametro: string;
+    vidro: string;
   };
 }
 
