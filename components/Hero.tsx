@@ -39,7 +39,7 @@ const Hero: React.FC<HeroProps> = ({ collection, theme }) => {
         <div className={`absolute inset-0 bg-gradient-to-b ${isMasculine ? 'from-[#0B0B0B]/60 via-[#0B0B0B]/20 to-[#0B0B0B]' : 'from-[#FAF7F2]/60 via-[#FAF7F2]/20 to-[#FAF7F2]'}`}></div>
       </div>
 
-      <div className="relative z-10 text-center space-y-6 md:space-y-8 px-6 max-w-4xl opacity-0 animate-[fade-in-up_1.2s_ease-out_forwards]">
+      <div className="relative z-10 text-center space-y-6 md:space-y-8 px-6 max-w-4xl animate-[fade-in-up_1.2s_ease-out_forwards]">
         <h2 className={`${theme.accent} tracking-[0.3em] uppercase text-[10px] md:text-sm font-semibold`}>
           {content.tag}
         </h2>
