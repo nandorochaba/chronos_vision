@@ -14,60 +14,60 @@ interface CatalogSectionProps {
 }
 
 const CatalogSection: React.FC<CatalogSectionProps> = ({ 
-  collection, 
   products,
   campaigns,
   onSelectProduct, 
   theme 
 }) => {
-  const [activeCategory, setActiveCategory] = useState<string>('Todos');
-  const [displayProducts, setDisplayProducts] = useState<WatchProduct[]>([]);
+  const [activeCategory, setActiveCategory] = useState<string>('Universo');
 
   const categories = useMemo(() => {
     const cats = products.filter(p => p.collection === 'masculine').map(p => p.category);
-    return ['Todos', ...Array.from(new Set(cats))];
+    return ['Universo', ...Array.from(new Set(cats))];
   }, [products]);
 
-  useEffect(() => {
-    const filtered = activeCategory === 'Todos' 
+  const displayProducts = useMemo(() => {
+    return activeCategory === 'Universo' 
       ? products.filter(p => p.collection === 'masculine')
       : products.filter(p => p.collection === 'masculine' && p.category === activeCategory);
-    setDisplayProducts(filtered);
   }, [products, activeCategory]);
 
   return (
-    <section id="catalog" className="py-24 px-6 sm:px-8 lg:px-16 max-w-7xl mx-auto scroll-mt-24">
-      <div className="text-center mb-20 space-y-10">
-        <div className="space-y-4">
-          <h2 className="text-4xl md:text-5xl lg:text-7xl font-serif tracking-tight">
-            Curadoria Heritage
+    <section id="catalog" className="py-32 px-6 sm:px-8 lg:px-16 max-w-7xl mx-auto scroll-mt-24">
+      <div className="text-center mb-24 space-y-12">
+        <div className="space-y-6">
+          <div className="flex items-center justify-center space-x-4 opacity-30">
+            <span className="text-[10px] tracking-[0.8em] uppercase font-black">Heritage Masterpiece</span>
+          </div>
+          <h2 className="text-5xl md:text-7xl font-serif tracking-tight">
+            Curadoria <span className="italic font-light">Atelier</span>
           </h2>
-          <p className={`${theme.muted} text-[10px] tracking-[0.5em] uppercase font-black`}>Engenharia de Alta Performance</p>
-          <div className={`h-[1.5px] w-16 mx-auto opacity-40 ${theme.accentBg} mt-6`}></div>
+          <div className={`h-[1px] w-12 mx-auto ${theme.accentBg} opacity-30`}></div>
         </div>
 
-        {/* Touch-Friendly Category Scroll - Simplified */}
-        <div className="flex flex-nowrap md:flex-wrap justify-start md:justify-center gap-10 pt-10 overflow-x-auto no-scrollbar pb-2 px-4 -mx-4 mask-fade-edges">
+        {/* Exclusive Concierge Filters */}
+        <div className="flex flex-nowrap md:flex-wrap justify-start md:justify-center gap-12 pt-12 overflow-x-auto no-scrollbar pb-4 px-4 -mx-4 mask-fade-edges">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`whitespace-nowrap text-[9px] tracking-[0.4em] uppercase font-black transition-all active:scale-90 ${
-                activeCategory === cat ? theme.accent : 'opacity-20 hover:opacity-60'
+              className={`group relative whitespace-nowrap text-[10px] tracking-[0.5em] uppercase font-black transition-all duration-700 active:scale-90 ${
+                activeCategory === cat ? theme.accent : 'opacity-20 hover:opacity-100'
               }`}
             >
               {cat}
+              <span className={`absolute -bottom-3 left-0 w-full h-px ${theme.accentBg} transition-transform duration-700 origin-right ${activeCategory === cat ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100 group-hover:origin-left'}`}></span>
             </button>
           ))}
         </div>
       </div>
 
-      <div className="mb-32 min-h-[50vh] animate-[fade-in_0.8s_ease-out]">
+      <div className="mb-40 min-h-[60vh] animate-[fade-in_1.2s_ease-out]">
         <ProductGrid products={displayProducts} onSelect={onSelectProduct} theme={theme} />
         {displayProducts.length === 0 && (
-          <div className="flex flex-col items-center justify-center py-20 opacity-20 space-y-4">
-             <div className={`w-12 h-px ${theme.accentBg}`}></div>
-             <p className="text-[10px] uppercase tracking-widest">Nenhuma peça disponível nesta categoria</p>
+          <div className="flex flex-col items-center justify-center py-32 opacity-20 space-y-6">
+             <div className={`w-16 h-px ${theme.accentBg}`}></div>
+             <p className="text-[10px] uppercase tracking-[0.5em]">Atelier em preparação para esta categoria</p>
           </div>
         )}
       </div>

@@ -6,58 +6,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <title>Chronos & Vision | O Tempo Revelado</title>
     
-    <!-- Luxury Favicon: High-End Watch Dial (Based on reference image) -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15.5' fill='%230B0B0B'/%3E%3Ccircle cx='16' cy='16' r='14.5' fill='none' stroke='%23C6A75E' stroke-width='1'/%3E%3Ctext x='16' y='10.5' font-family='serif' font-size='5.5' fill='%23C6A75E' text-anchor='middle' font-weight='bold' letter-spacing='0.2'%3EXII%3C/text%3E%3Ccircle cx='16' cy='16' r='1' fill='%23C6A75E'/%3E%3Cpath d='M16 16L16 8.5' stroke='%23C6A75E' stroke-width='1' stroke-linecap='round'/%3E%3Cpath d='M16 16L22.5 13.5' stroke='%23C6A75E' stroke-width='1' stroke-linecap='round'/%3E%3Ccircle cx='29.5' cy='16' r='0.6' fill='%23C6A75E' opacity='0.6'/%3E%3Ccircle cx='16' cy='29.5' r='0.6' fill='%23C6A75E' opacity='0.6'/%3E%3Ccircle cx='2.5' cy='16' r='0.6' fill='%23C6A75E' opacity='0.6'/%3E%3C/svg%3E">
+    <!-- Luxury Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15.5' fill='%230B0B0B'/%3E%3Ccircle cx='16' cy='16' r='14.5' fill='none' stroke='%23C6A75E' stroke-width='1'/%3E%3Ctext x='16' y='10.5' font-family='serif' font-size='5.5' fill='%23C6A75E' text-anchor='middle' font-weight='bold' letter-spacing='0.2'%3EXII%3C/text%3E%3Ccircle cx='16' cy='16' r='1' fill='%23C6A75E'/%3E%3Cpath d='M16 16L16 8.5' stroke='%23C6A75E' stroke-width='1' stroke-linecap='round'/%3E%3Cpath d='M16 16L22.5 13.5' stroke='%23C6A75E' stroke-width='1' stroke-linecap='round'/%3E%3C/svg%3E">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
     <style>
       :root {
-        --active-accent: #C6A75E;
+        --gold-primary: #C6A75E;
+        --gold-light: #E2CF9F;
       }
       body {
         font-family: 'Inter', sans-serif;
         background-color: #0B0B0B;
         color: #F5F5F5;
         overflow-x: hidden;
-        -webkit-tap-highlight-color: transparent;
-        /* Mobile Ergonomics */
-        overscroll-behavior-y: none;
+        -webkit-font-smoothing: antialiased;
       }
       h1, h2, h3, .font-serif {
         font-family: 'Playfair Display', serif;
       }
-      /* Otimização para toque */
-      button, a {
-        touch-action: manipulation;
-        user-select: none;
-      }
-      ::-webkit-scrollbar {
-        width: 4px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #0B0B0B;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #C6A75E;
-      }
-      /* Previne scroll elástico no mobile para modais */
-      body.modal-open {
-        overflow: hidden;
-        height: 100vh;
-      }
       
-      /* Smooth Hide for Navbar on Scroll */
-      .nav-hidden {
-        transform: translateY(-100%);
+      /* Film Grain Texture Overlay */
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+        opacity: 0.04;
+        pointer-events: none;
+        z-index: 9999;
       }
-      
-      /* Safe Area Helper */
-      .pb-safe {
-        padding-bottom: env(safe-area-inset-bottom);
+
+      /* Luxury Scrollbar */
+      ::-webkit-scrollbar { width: 3px; }
+      ::-webkit-scrollbar-track { background: #0B0B0B; }
+      ::-webkit-scrollbar-thumb { background: linear-gradient(to bottom, transparent, var(--gold-primary), transparent); }
+
+      /* Immersive Gradients */
+      .bg-onyx-radial {
+        background: radial-gradient(circle at 50% 50%, #1A1A1A 0%, #0B0B0B 100%);
       }
+
+      /* Typographic refinement */
+      .letter-spacing-v-wide { letter-spacing: 0.6em; }
+      .letter-spacing-luxury { letter-spacing: 0.25em; }
     </style>
     <script type="importmap">
     {
@@ -68,7 +63,6 @@
       }
     }
     </script>
-    <!-- Entry point script para inicializar a aplicação -->
     <script type="module" src="index.tsx"></script>
   </head>
   <body>
