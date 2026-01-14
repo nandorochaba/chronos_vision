@@ -15,8 +15,6 @@ const Navbar: React.FC<NavbarProps> = ({
   isScrolled, 
   cartCount, 
   onOpenCart, 
-  currentCollection, 
-  onToggleCollection,
   theme
 }) => {
   const scrollTo = (id: string) => {
@@ -35,26 +33,12 @@ const Navbar: React.FC<NavbarProps> = ({
           <span className="text-xl md:text-2xl font-serif tracking-widest uppercase">
             Chronos<span className={theme.accent}>&</span>Vision
           </span>
+          <span className="text-[7px] tracking-[0.5em] uppercase opacity-40 font-black -mt-1 ml-0.5">Heritage Mastery</span>
         </div>
         
         <div className="hidden md:flex items-center space-x-12 text-[10px] tracking-[0.2em] uppercase font-bold">
-          <div className="flex bg-black/5 rounded-full p-1 border border-current/10">
-            <button 
-              onClick={() => onToggleCollection('masculine')}
-              className={`px-6 py-2 rounded-full transition-all duration-300 ${currentCollection === 'masculine' ? `${theme.accentBg} text-white md:text-black shadow-lg` : 'opacity-40 hover:opacity-100'}`}
-            >
-              Masculino
-            </button>
-            <button 
-              onClick={() => onToggleCollection('feminine')}
-              className={`px-6 py-2 rounded-full transition-all duration-300 ${currentCollection === 'feminine' ? `${theme.accentBg} text-white md:text-black shadow-lg` : 'opacity-40 hover:opacity-100'}`}
-            >
-              Feminino
-            </button>
-          </div>
-
           <button onClick={() => scrollTo('catalog')} className="hover:opacity-60 transition-opacity">Catálogo</button>
-          <button onClick={() => scrollTo('about')} className="hover:opacity-60 transition-opacity">Visão</button>
+          <button onClick={() => scrollTo('about')} className="hover:opacity-60 transition-opacity">A Marca</button>
           
           <button 
             onClick={onOpenCart}

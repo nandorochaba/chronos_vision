@@ -11,21 +11,10 @@ export const INITIAL_CAMPAIGNS: Campaign[] = [
     badge: "Edição de Colecionador",
     region: "Logística Premium Maranhão",
     imageUrl: "https://images.unsplash.com/photo-1548171916-c0ea983ceabd?q=80&w=1200&auto=format&fit=crop"
-  },
-  {
-    id: 'camp-feminine',
-    collection: 'feminine',
-    title: "Luz e Sofisticação",
-    subtitle: "Onde a delicadeza encontra a eternidade.",
-    description: "Curadoria exclusiva de peças em metais nobres, madrepérola e acabamentos joalheiros. Serviço de Concierge personalizado para garantir que a sua escolha seja tão brilhante quanto o seu tempo.",
-    badge: "Exclusividade Atelier",
-    region: "Entrega Expressa Regional",
-    imageUrl: "https://images.unsplash.com/photo-1509048191080-d2984bad6ad5?q=80&w=1200&auto=format&fit=crop"
   }
 ];
 
 export const WATCHES: WatchProduct[] = [
-  // --- COLEÇÃO MASCULINA ---
   {
     id: 'stellaris-gmt',
     collection: 'masculine',
@@ -113,71 +102,6 @@ export const WATCHES: WatchProduct[] = [
       pulseira: 'Malha de Aço (Shark Mesh)',
       resistencia: '300m (30 ATM)',
       diametro: '41mm'
-    }
-  },
-
-  // --- COLEÇÃO FEMININA ---
-  {
-    id: 'aurora-pearl',
-    collection: 'feminine',
-    category: 'Joalheria',
-    name: 'Aurora Pearl',
-    shortDescription: 'A poesia da madrepérola.',
-    longDescription: 'Cada mostrador é único, esculpido em madrepérola natural das águas do pacífico. O Aurora Pearl não marca apenas as horas; ele captura a luz do sol.',
-    material: 'Ouro Rose 18k & Madrepérola',
-    price: 16200,
-    priceLabel: 'R$ 16.200',
-    mainImage: 'https://images.unsplash.com/photo-1539533397341-a0d451ac423f?q=80&w=1000&auto=format&fit=crop',
-    videoUrl: 'https://cdn.pixabay.com/video/2016/09/20/5443-183492576_large.mp4',
-    gallery: [
-      'https://images.unsplash.com/photo-1509048191080-d2984bad6ad5?q=80&w=1000&auto=format&fit=crop'
-    ],
-    specs: {
-      movimento: 'Quartzo Suíço Slim-Line',
-      caixa: 'Aço PVD Rose Gold',
-      pulseira: 'Elos Jubileu delicados',
-      resistencia: '30m (3 ATM)',
-      diametro: '32mm'
-    }
-  },
-  {
-    id: 'lumina-diamond',
-    collection: 'feminine',
-    category: 'Clássico',
-    name: 'Lumina Diamond',
-    shortDescription: 'O brilho eterno no seu pulso.',
-    longDescription: 'Com 12 marcadores em diamantes simulados de lapidação brilhante, o Lumina é a definição de luxo discreto para o dia a dia da mulher moderna.',
-    material: 'Aço Polido & Cristais de Safira',
-    price: 11900,
-    priceLabel: 'R$ 11.900',
-    mainImage: 'https://images.unsplash.com/photo-1517462964-21fdcec3f25b?q=80&w=1000&auto=format&fit=crop',
-    gallery: [],
-    specs: {
-      movimento: 'Automático Lady-Calibre',
-      caixa: 'Aço Inoxidável Polido',
-      pulseira: 'Couro Branco com Textura Croco',
-      resistencia: '30m (3 ATM)',
-      diametro: '34mm'
-    }
-  },
-  {
-    id: 'celestial-rose',
-    collection: 'feminine',
-    category: 'Minimalista',
-    name: 'Celestial Rose',
-    shortDescription: 'Simplicidade em ouro rosa.',
-    longDescription: 'Design arquitetônico com foco na pureza das formas. O Celestial Rose é uma declaração de estilo que transcende tendências passageiras.',
-    material: 'Aço PVD Rose Gold & Prata',
-    price: 8500,
-    priceLabel: 'R$ 8.500',
-    mainImage: 'https://images.unsplash.com/photo-1524805444758-089113d48a6d?q=80&w=1000&auto=format&fit=crop',
-    gallery: [],
-    specs: {
-      movimento: 'Quartzo Suíço Ultra-Thin',
-      caixa: 'Design Slim 6mm',
-      pulseira: 'Couro Nude Premium',
-      resistencia: 'Não resistente',
-      diametro: '36mm'
     }
   }
 ];

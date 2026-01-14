@@ -22,7 +22,9 @@ const App: React.FC = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
-  const [collection, setCollection] = useState<CollectionType>('masculine');
+  
+  // Fixado em masculino conforme nova estratégia
+  const collection: CollectionType = 'masculine';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -67,26 +69,26 @@ const App: React.FC = () => {
 
   const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
 
-  const isMasculine = collection === 'masculine';
+  // Tema fixo no Masculino (Onyx & Gold)
   const theme = {
-    bg: isMasculine ? 'bg-[#0B0B0B]' : 'bg-[#FAF7F2]',
-    text: isMasculine ? 'text-[#F5F5F5]' : 'text-[#2C2C2C]',
-    accent: isMasculine ? 'text-[#C6A75E]' : 'text-[#B08968]',
-    accentBg: isMasculine ? 'bg-[#C6A75E]' : 'bg-[#B08968]',
-    accentBorder: isMasculine ? 'border-[#C6A75E]' : 'border-[#B08968]',
-    muted: isMasculine ? 'text-[#F5F5F5]/60' : 'text-[#2C2C2C]/60',
-    sectionBg: isMasculine ? 'bg-[#1A1A1A]' : 'bg-[#F3EFE9]',
-    border: isMasculine ? 'border-[#F5F5F5]/10' : 'border-[#2C2C2C]/10',
+    bg: 'bg-[#0B0B0B]',
+    text: 'text-[#F5F5F5]',
+    accent: 'text-[#C6A75E]',
+    accentBg: 'bg-[#C6A75E]',
+    accentBorder: 'border-[#C6A75E]',
+    muted: 'text-[#F5F5F5]/60',
+    sectionBg: 'bg-[#1A1A1A]',
+    border: 'border-[#F5F5F5]/10',
   };
 
   return (
-    <div className={`min-h-screen flex flex-col transition-all duration-700 ${theme.bg} ${theme.text}`}>
+    <div className={`min-h-screen flex flex-col ${theme.bg} ${theme.text}`}>
       <Navbar 
         isScrolled={isScrolled} 
         cartCount={cartCount} 
         onOpenCart={() => setIsCartOpen(true)}
         currentCollection={collection}
-        onToggleCollection={setCollection}
+        onToggleCollection={() => {}} // Desativado
         theme={theme}
       />
       
@@ -95,7 +97,7 @@ const App: React.FC = () => {
         
         <CatalogSection 
           collection={collection}
-          setCollection={setCollection}
+          setCollection={() => {}} // Desativado
           products={watches}
           campaigns={campaigns}
           onSelectProduct={openProduct}
@@ -108,10 +110,9 @@ const App: React.FC = () => {
 
       <Footer theme={theme} />
 
-      {/* Novo MobileNav com as 4 sessões solicitadas */}
       <MobileNav 
         currentCollection={collection}
-        onToggleCollection={setCollection}
+        onToggleCollection={() => {}}
         onOpenCart={() => setIsCartOpen(true)}
         cartCount={cartCount}
         theme={theme}
