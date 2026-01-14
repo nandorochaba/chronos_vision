@@ -23,7 +23,6 @@ const App: React.FC = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   
-  // Fixado em masculino conforme nova estratégia
   const collection: CollectionType = 'masculine';
 
   useEffect(() => {
@@ -36,12 +35,12 @@ const App: React.FC = () => {
 
   const openProduct = (product: WatchProduct) => {
     setSelectedProduct(product);
-    document.body.classList.add('modal-open');
+    document.body.style.overflow = 'hidden';
   };
 
   const closeProduct = () => {
     setSelectedProduct(null);
-    document.body.classList.remove('modal-open');
+    document.body.style.overflow = 'unset';
   };
 
   const addToCart = (product: WatchProduct) => {
@@ -69,7 +68,6 @@ const App: React.FC = () => {
 
   const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
 
-  // Tema fixo no Masculino (Onyx & Gold)
   const theme = {
     bg: 'bg-[#0B0B0B]',
     text: 'text-[#F5F5F5]',
@@ -88,7 +86,7 @@ const App: React.FC = () => {
         cartCount={cartCount} 
         onOpenCart={() => setIsCartOpen(true)}
         currentCollection={collection}
-        onToggleCollection={() => {}} // Desativado
+        onToggleCollection={() => {}}
         theme={theme}
       />
       
@@ -97,7 +95,7 @@ const App: React.FC = () => {
         
         <CatalogSection 
           collection={collection}
-          setCollection={() => {}} // Desativado
+          setCollection={() => {}}
           products={watches}
           campaigns={campaigns}
           onSelectProduct={openProduct}

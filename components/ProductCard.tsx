@@ -11,41 +11,44 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ product, onClick, theme }) => {
   return (
     <div 
-      className="group cursor-pointer flex flex-col space-y-5 transition-all duration-700 hover:-translate-y-3 hover:scale-[1.03]"
+      className="group cursor-pointer flex flex-col space-y-3 transition-all duration-700 active:scale-98"
       onClick={onClick}
     >
-      <div className={`relative aspect-[3/4] overflow-hidden ${theme.sectionBg} shadow-2xl transition-shadow duration-700 group-hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.6)]`}>
-        {/* Decorative elements */}
-        <div className={`absolute top-4 left-4 z-10 text-[7px] tracking-[0.4em] uppercase font-black px-2 py-1 border ${theme.border} bg-black/5 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-700`}>
-          Mastery Series
+      <div className={`relative aspect-[3/4] overflow-hidden ${theme.sectionBg} rounded-lg shadow-lg transition-all duration-700`}>
+        {/* Status Badge */}
+        <div className="absolute top-3 left-3 z-10">
+          <div className={`text-[8px] tracking-[0.2em] uppercase font-black px-2.5 py-1 bg-black/60 backdrop-blur-md text-[#C6A75E] border border-[#C6A75E]/20 rounded-sm`}>
+            Destaque
+          </div>
         </div>
 
         <img 
           src={product.mainImage} 
           alt={product.name}
-          className="w-full h-full object-cover transition-all duration-[1.5s] ease-out group-hover:scale-110 group-hover:rotate-1"
+          className="w-full h-full object-cover transition-all duration-[2s] ease-out group-hover:scale-110"
+          loading="lazy"
         />
         
-        {/* Premium Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+        {/* Desktop Hover Overlay */}
+        <div className="absolute inset-0 bg-black/0 md:group-hover:bg-black/30 transition-all duration-700"></div>
         
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-700 translate-y-4 group-hover:translate-y-0">
-          <div className={`px-6 py-3 bg-white/10 backdrop-blur-xl border border-white/20 text-[9px] tracking-[0.3em] uppercase font-black text-white`}>
-            Descobrir Peça
+        <div className="hidden md:flex absolute inset-0 items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-700 translate-y-4 group-hover:translate-y-0">
+          <div className={`px-8 py-3 bg-white/10 backdrop-blur-2xl border border-white/20 text-[9px] tracking-[0.4em] uppercase font-black text-white rounded-sm`}>
+            Explorar
           </div>
         </div>
       </div>
       
-      <div className="space-y-2 px-1 text-center md:text-left">
-        <h3 className={`text-sm md:text-base font-serif tracking-tight transition-colors duration-500 group-hover:${theme.accent}`}>
+      <div className="space-y-1 px-1">
+        <h3 className={`text-xs md:text-sm font-serif tracking-tight leading-tight group-hover:${theme.accent} transition-colors`}>
           {product.name}
         </h3>
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-1">
-          <p className={`text-[8px] md:text-[9px] ${theme.muted} uppercase tracking-[0.25em] font-medium`}>
-            {product.material}
-          </p>
-          <p className="text-[10px] md:text-xs font-serif opacity-80 italic">
+        <div className="flex flex-col gap-0.5">
+          <p className="text-xs md:text-sm font-serif text-[#C6A75E] font-medium">
             {product.priceLabel}
+          </p>
+          <p className="text-[8px] opacity-40 uppercase tracking-[0.2em] font-black">
+            12x R$ {(product.price/12).toFixed(2).replace('.', ',')}
           </p>
         </div>
       </div>

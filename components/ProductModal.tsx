@@ -10,129 +10,189 @@ interface ProductModalProps {
 }
 
 const ProductModal: React.FC<ProductModalProps> = ({ product, onClose, onAddToCart, theme }) => {
-  const mediaItems = [
-    ...(product.videoUrl ? [{ type: 'video', url: product.videoUrl }] : []),
+  const allMedia = [
     { type: 'image', url: product.mainImage },
-    ...product.gallery.filter(url => url.length > 0).map(url => ({ type: 'image', url }))
+    ...product.gallery.map(url => ({ type: 'image', url }))
   ];
 
-  const [activeMedia, setActiveMedia] = useState(mediaItems[0]);
-  const [isMuted, setIsMuted] = useState(true);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const [activeMediaIndex, setActiveMediaIndex] = useState(0);
+  const [activeTab, setActiveTab] = useState<'info' | 'specs' | 'style'>('info');
+  const galleryRef = useRef<HTMLDivElement>(null);
+
+  const scrollToMedia = (index: number) => {
+    setActiveMediaIndex(index);
+    if (galleryRef.current) {
+      const scrollAmount = galleryRef.current.clientWidth * index;
+      galleryRef.current.scrollTo({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
+
+  const handleScroll = () => {
+    if (galleryRef.current) {
+      const index = Math.round(galleryRef.current.scrollLeft / galleryRef.current.clientWidth);
+      setActiveMediaIndex(index);
+    }
+  };
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center p-0 md:p-12 lg:p-24 animate-[fade-in_0.6s_ease-out]">
-      <div 
-        className={`absolute inset-0 bg-[#0B0B0B]/95 backdrop-blur-3xl`}
-        onClick={onClose}
-      />
+    <div className="fixed inset-0 z-[200] flex flex-col bg-black animate-[fade-in_0.3s_ease-out] overflow-y-auto no-scrollbar">
+      {/* Background Overlay for Desktop */}
+      <div className="hidden md:block absolute inset-0 bg-black/80 backdrop-blur-md" onClick={onClose} />
       
-      <div className={`relative w-full h-full md:h-auto md:max-w-7xl md:max-h-[85vh] ${theme.sectionBg} md:border ${theme.border} overflow-y-auto overflow-x-hidden md:rounded-sm flex flex-col md:flex-row shadow-[0_60px_100px_-20px_rgba(0,0,0,0.8)]`}>
+      {/* Container Principal */}
+      <div className={`relative w-full min-h-full md:min-h-0 md:h-[95vh] md:max-w-7xl md:mx-auto md:my-[2.5vh] ${theme.sectionBg} flex flex-col md:flex-row md:rounded-xl shadow-2xl overflow-visible md:overflow-hidden`}>
         
-        {/* Close Button - Integrated */}
+        {/* BOTAO FECHAR FIXO NO TOPO MOBILE */}
         <button 
-          onClick={onClose}
-          className="fixed md:absolute top-8 right-8 z-[250] p-4 bg-white/5 backdrop-blur-3xl rounded-full hover:bg-white/10 transition-all active:scale-90"
+          onClick={onClose} 
+          className="fixed top-5 right-5 z-[300] p-4 bg-black/40 backdrop-blur-xl rounded-full border border-white/10 text-white shadow-xl hover:scale-110 active:scale-90 transition-all"
+          aria-label="Fechar"
         >
-          <svg className="w-5 h-5 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M6 18L18 6M6 6l12 12" />
-          </svg>
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" strokeWidth={2.5}/></svg>
         </button>
 
-        {/* Experience Showcase */}
-        <div className={`w-full md:w-[55%] ${theme.bg} relative flex flex-col bg-black`}>
-          <div className="flex-grow relative overflow-hidden h-[60vh] md:h-auto flex items-center justify-center">
-            {activeMedia.type === 'video' ? (
-              <video 
-                ref={videoRef}
-                key={activeMedia.url}
-                src={activeMedia.url}
-                autoPlay muted={isMuted} loop playsInline
-                className="w-full h-full object-cover animate-[reveal-zoom_1.5s_cubic-bezier(0.22,1,0.36,1)]"
-              />
-            ) : (
-              <img 
-                src={activeMedia.url} 
-                alt={product.name} 
-                className="w-full h-full object-cover animate-[reveal-zoom_1.5s_cubic-bezier(0.22,1,0.36,1)]"
-              />
-            )}
-            
-            <div className="absolute top-10 left-10 z-20">
-              <div className="px-5 py-2 bg-black/40 backdrop-blur-2xl border border-white/10 rounded-full flex items-center gap-3">
-                <span className={`w-1 h-1 ${activeMedia.type === 'video' ? 'bg-[#C6A75E] shadow-[0_0_8px_#C6A75E]' : 'bg-white/50'} rounded-full`}></span>
-                <span className="text-[8px] text-white/80 font-black uppercase tracking-[0.6em]">Heritage Still</span>
+        {/* LADO ESQUERDO: GALERIA (No mobile ela sobe com o scroll da página) */}
+        <div className="w-full md:w-[55%] h-[60vh] md:h-full relative bg-black shrink-0">
+          <div 
+            ref={galleryRef}
+            onScroll={handleScroll}
+            className="flex h-full overflow-x-auto snap-x snap-mandatory no-scrollbar"
+          >
+            {allMedia.map((media, i) => (
+              <div key={i} className="min-w-full h-full snap-center relative">
+                <img src={media.url} alt={`${product.name} ${i}`} className="w-full h-full object-cover" />
               </div>
-            </div>
+            ))}
           </div>
-          
-          <div className={`flex gap-px bg-white/5 p-4 overflow-x-auto no-scrollbar`}>
-            {mediaItems.map((item, i) => (
+
+          {/* INDICADORES */}
+          <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-2 px-6 z-20">
+            {allMedia.map((_, i) => (
               <button 
                 key={i} 
-                onClick={() => setActiveMedia(item)}
-                className={`flex-shrink-0 w-20 h-20 relative overflow-hidden transition-all duration-700 ${activeMedia.url === item.url ? 'ring-1 ring-white/20' : 'opacity-40 grayscale hover:opacity-100 hover:grayscale-0'}`}
-              >
-                <img src={item.type === 'video' ? product.mainImage : item.url} className="w-full h-full object-cover" />
-                {item.type === 'video' && <div className="absolute inset-0 flex items-center justify-center bg-black/40"><svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>}
-              </button>
+                onClick={() => scrollToMedia(i)}
+                className={`h-1 transition-all duration-300 rounded-full ${activeMediaIndex === i ? 'w-10 bg-[#C6A75E]' : 'w-2 bg-white/30'}`}
+              />
             ))}
           </div>
         </div>
 
-        {/* Narrative Details */}
-        <div className="w-full md:w-[45%] p-10 md:p-16 lg:p-24 space-y-16 relative pb-40 md:pb-24">
-          <div className="space-y-8">
-            <div className="flex items-center space-x-6 opacity-40">
-               <span className={`w-12 h-px ${theme.accentBg}`}></span>
-               <span className="text-[10px] uppercase tracking-[0.8em] font-black">{product.category}</span>
+        {/* LADO DIREITO: CONTEÚDO */}
+        <div className="w-full md:w-[45%] flex flex-col bg-[#0B0B0B] min-h-screen md:min-h-0">
+          
+          {/* HEADER INFORMATIVO */}
+          <div className="p-8 md:p-12 pb-6 border-b border-white/5 space-y-2">
+            <div className="flex items-center gap-3">
+              <span className="text-[9px] uppercase tracking-[0.4em] text-[#C6A75E] font-black">{product.category}</span>
+              <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
             </div>
-            <h2 className="text-5xl md:text-7xl lg:text-8xl font-serif tracking-tighter leading-tight">{product.name}</h2>
-            <p className="text-3xl font-serif text-[#C6A75E] tracking-tight">{product.priceLabel}</p>
+            <h2 className="text-4xl md:text-5xl font-serif tracking-tight leading-none">{product.name}</h2>
+            <div className="flex items-baseline gap-4 pt-4">
+               <span className="text-3xl font-serif text-[#C6A75E]">{product.priceLabel}</span>
+               <span className="text-[10px] opacity-40 uppercase tracking-widest">Em até 12x</span>
+            </div>
           </div>
 
-          <div className="space-y-10">
-            <p className={`text-xl md:text-2xl ${theme.muted} leading-relaxed font-light italic opacity-90 border-l-2 ${theme.accentBorder} pl-10`}>
-              "{product.shortDescription}"
-            </p>
-            <p className={`${theme.muted} leading-relaxed text-sm md:text-base font-light opacity-60`}>
-              {product.longDescription}
-            </p>
+          {/* ÁREA DE TABS E TEXTO */}
+          <div className="flex-grow p-8 md:p-12 space-y-12 pb-40">
+            
+            {/* SELETOR DE ABAS ERGONÔMICO */}
+            <div className="flex justify-between md:justify-start md:gap-10 border-b border-white/5">
+              {[
+                { id: 'info', label: 'Essência' },
+                { id: 'specs', label: 'Técnico' },
+                { id: 'style', label: 'Estilo' }
+              ].map(tab => (
+                <button 
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id as any)}
+                  className={`text-[10px] uppercase tracking-[0.2em] font-black pb-4 transition-all relative ${activeTab === tab.id ? 'text-white' : 'opacity-20 hover:opacity-100'}`}
+                >
+                  {tab.label}
+                  {activeTab === tab.id && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#C6A75E]" />}
+                </button>
+              ))}
+            </div>
+
+            {/* CONTEÚDO DA ABA */}
+            <div className="animate-[fade-in_0.5s_ease-out]">
+              {activeTab === 'info' && (
+                <div className="space-y-8">
+                  <p className="text-xl md:text-2xl font-serif italic leading-relaxed opacity-90 text-[#C6A75E]">
+                    "{product.shortDescription}"
+                  </p>
+                  <p className="text-base opacity-60 leading-relaxed font-light">
+                    {product.longDescription}
+                  </p>
+                </div>
+              )}
+
+              {activeTab === 'specs' && (
+                <div className="grid gap-4">
+                  {[
+                    { label: 'Movimento', value: product.specs.movimento },
+                    { label: 'Material', value: product.material },
+                    { label: 'Mostrador', value: product.specs.vidro },
+                    { label: 'Diâmetro', value: product.specs.diametro },
+                    { label: 'Resistência', value: product.specs.resistencia }
+                  ].map((s, i) => (
+                    <div key={i} className="flex justify-between items-center py-4 border-b border-white/5">
+                      <span className="text-[10px] uppercase tracking-widest opacity-30">{s.label}</span>
+                      <span className="text-[11px] font-bold uppercase tracking-wider">{s.value}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {activeTab === 'style' && (
+                <div className="space-y-8">
+                  <div className="p-8 bg-white/5 border border-white/10 rounded-lg">
+                    <p className="text-sm italic font-serif leading-relaxed opacity-90">
+                      {product.lifestyleCopy}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* COMPRA SEGURA BADGES */}
+            <div className="pt-10 grid grid-cols-2 gap-8 opacity-40 border-t border-white/5">
+               <div className="flex items-center gap-3">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" strokeWidth={2}/></svg>
+                  <span className="text-[9px] uppercase tracking-widest font-black">Frete Prioritário</span>
+               </div>
+               <div className="flex items-center gap-3">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4" strokeWidth={2}/></svg>
+                  <span className="text-[9px] uppercase tracking-widest font-black">Garantia 1 Ano</span>
+               </div>
+            </div>
           </div>
 
-          <div className={`grid grid-cols-2 gap-y-10 border-t ${theme.border} pt-12`}>
-            {[
-              { label: 'Movimento', value: product.specs.movimento },
-              { label: 'Caixa', value: product.specs.caixa },
-              { label: 'Pulseira', value: product.specs.pulseira },
-              { label: 'Resistência', value: product.specs.resistencia }
-            ].map((spec, idx) => (
-              <div key={idx} className="space-y-2">
-                <span className={`text-[8px] ${theme.accent} uppercase tracking-[0.4em] font-black opacity-60`}>{spec.label}</span>
-                <p className="text-[11px] font-medium opacity-90 uppercase tracking-widest">{spec.value}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* Floating Purchase Request */}
-          <div className="fixed md:absolute bottom-0 left-0 right-0 p-8 md:p-12 bg-gradient-to-t from-black via-black/90 to-transparent md:bg-none z-[100] pb-safe">
-            <button 
-              onClick={() => { onAddToCart(product); onClose(); }}
-              className={`w-full py-6 ${theme.accentBg} text-white md:text-black text-[10px] uppercase tracking-[0.6em] font-black hover:opacity-95 active:scale-[0.98] transition-all rounded-full md:rounded-sm shadow-2xl relative overflow-hidden group`}
-            >
-              <div className="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-0 transition-transform duration-1000"></div>
-              <span className="relative z-10">Solicitar Reserva</span>
-            </button>
+          {/* BOTÃO DE AÇÃO FIXO NO MOBILE */}
+          <div className="fixed md:absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black via-black/95 to-transparent z-[100] md:z-50">
+            <div className="flex gap-4 max-w-4xl mx-auto">
+              <button 
+                onClick={() => { onAddToCart(product); onClose(); }}
+                className="flex-grow py-6 bg-[#C6A75E] text-black text-xs uppercase tracking-[0.5em] font-black shadow-[0_15px_40px_rgba(198,167,94,0.4)] hover:brightness-110 active:scale-95 transition-all rounded-lg"
+              >
+                Garantir o Meu
+              </button>
+              <button 
+                onClick={() => window.open(`https://wa.me/559898465825?text=Olá! Quero saber mais sobre o ${product.name}.`, '_blank')}
+                className="p-6 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition-colors"
+                aria-label="WhatsApp"
+              >
+                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.025 3.228L6.3 18.254l3.16-.944c.885.509 1.711.865 2.571.865 3.181 0 5.767-2.586 5.768-5.766 0-3.18-2.586-5.766-5.768-5.766z" /></svg>
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
       <style>{`
-        @keyframes reveal-zoom {
-          0% { opacity: 0; transform: scale(1.1); filter: blur(20px); }
-          100% { opacity: 1; transform: scale(1); filter: blur(0); }
-        }
         .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        @keyframes fade-in { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
       `}</style>
     </div>
   );
