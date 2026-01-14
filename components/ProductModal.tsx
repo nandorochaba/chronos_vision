@@ -178,7 +178,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose, onAddToCa
                 Garantir o Meu
               </button>
               <button 
-                onClick={() => window.open(`https://wa.me/559898465825?text=Olá! Gostaria de detalhes do ${product.name}.`, '_blank')}
+                onClick={() => window.open(`https://wa.me/5598983070387?text=Olá! Gostaria de detalhes do ${product.name}.`, '_blank')}
                 className="p-6 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 active:scale-90 transition-all text-[#C6A75E]"
                 aria-label="WhatsApp"
               >
