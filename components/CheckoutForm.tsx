@@ -59,7 +59,7 @@ DADOS DE ENTREGA:
 
 Fico no aguardo do PIX para envio!`;
 
-    const whatsappUrl = `https://wa.me/559898465825?text=${encodeURIComponent(fullMessage)}`;
+    const whatsappUrl = `https://wa.me/5598983070387?text=${encodeURIComponent(fullMessage)}`;
     window.open(whatsappUrl, '_blank');
     onClose();
   };
